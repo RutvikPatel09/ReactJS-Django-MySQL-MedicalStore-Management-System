@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <!--Body-->
+  <div class="container-fluid mt-3">
+    <div class="row mx-auto">
+        {% for doctor in doctors %}
+       <div class="card mb-3" id={{doctor.id}} style="width: 16rem;">
+        <img src="{{doctor.doctor_image.url}}" class="card-img-top" alt="Card Image Cap" style="width:100;height:100">
+        <div class="card-body">
+          <h5 class="card-title">{{doctor.doctor_name}}</h5>
+          <p class="card-text">{{doctor.doctor_type}}</p>
+          <p class="card-text"><a href="mailto:{{doctor.email}}">{{doctor.email}}</a></p>
+            <p class="card-text"><a href="tel:{{doctor.phone}}">{{doctor.phone}}</a></p>
+        </div>
+        </div>
+        {% endfor %}
+    </div>
+  </div>
+
+{% endblock %}

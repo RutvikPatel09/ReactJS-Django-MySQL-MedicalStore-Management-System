@@ -1,0 +1,53 @@
+  {% extends 'base.html' %}
+
+  {% block content %}
+
+  {% load cart %}
+  {% load custom_filter %}
+  <!--Body-->
+  <div class="container-fluid mt-3">
+    <div class="row mx-auto">
+       {% for medicine in medicines %}
+       <div class="card mb-3" id={{medicine.id}} style="width: 16rem;">
+        <img src="{{medicine.medicine_img.url}}" class="card-img-top" alt="Card Image Cap" style="width:100;height:100">
+        <div class="card-body">
+          <h5 class="card-title">{{medicine.name}}</h5>
+          <p class="card-text">{{medicine.description}}</p>
+          <p class="card-text"><b>{{medicine.sell_price|currency}}</b></p>
+          {{medicine | is_in_cart:request.session.cart }}    
+        </div>
+        <div class="card-footer p-0 no-gutters">
+          {% if medicine|is_in_cart:request.session.cart %}
+          <div class="row">
+            <form action="/#{medicine.id}" method="POST" class="col-2 p-0" >
+              {% csrf_token %}
+              <input type="text" hidden name='medicine' value='{{medicine.id}}'>
+              <input type="text" hidden name='remove' value='True'>
+              <input type="submit" value=" - " class="btn btn-block btn-secondary">
+            </form>
+          <div class="text-center col">{{medicine|cart_quantity:request.session.cart}} in cart</div>
+            <form action="/#{medicine.id}" method="POST" class="col-2 p-0" >
+              {% csrf_token %}
+              <input type="text" hidden name='medicine' value='{{medicine.id}}'>
+              <input type="submit" value=" + " class="btn btn-block btn-secondary">
+            </form>
+          </div>
+          {% else  %}
+          <form action="/#{medicine.id}" method="POST" class="btn-block">
+            {% csrf_token %}
+            <input type="text" hidden name='medicine' value='{{medicine.id}}'>
+            <input type="submit" class="float-right btn btn-light border form-control" value="Add To Cart"/>
+          </form>
+          {% endif %}
+          
+        </div>  
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endblock %}
+
+  
+  
+
+   
